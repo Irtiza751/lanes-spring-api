@@ -30,11 +30,14 @@ public class User {
     private String password;
     private String avatar;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projects;
 
     @OneToMany(mappedBy = "member")
     private List<ProjectMember> projectMembers;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -53,5 +56,13 @@ public class User {
         }
         projectMembers.add(projectMember);
         projectMember.setMember(this);
+    }
+
+    public void add(Comment comment) {
+        if(comments == null) {
+            comments = new ArrayList<>();
+        }
+        comments.add(comment);
+        comment.setUser(this);
     }
 }
