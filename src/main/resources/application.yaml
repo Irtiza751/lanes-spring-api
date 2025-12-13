@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: lanes
+  jwt:
+    secret: ${JWT_SECRET}
+  datasource:
+    username: irtiza
+    password: password
+    url: jdbc:postgresql://localhost:5432/spring_lanes_db
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
