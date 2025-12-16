@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
@@ -32,4 +33,12 @@ public class ProjectMember {
 
     @CreationTimestamp
     private LocalDateTime joinedAt;
+}
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+class ProjectMemberId implements Serializable {
+    private String project;
+    private String member;
 }

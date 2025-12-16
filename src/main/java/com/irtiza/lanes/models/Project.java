@@ -32,6 +32,15 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private List<ProjectMember> projectMembers;
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sprint> sprints;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Status> statuses;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Label> labels;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
@@ -41,5 +50,29 @@ public class Project {
         }
         projectMembers.add(projectMember);
         projectMember.setProject(this);
+    }
+
+    public void add(Sprint sprint) {
+        if(sprints == null) {
+            sprints = new ArrayList<>();
+        }
+        sprints.add(sprint);
+        sprint.setProject(this);
+    }
+
+    public void add(Status status) {
+        if(statuses == null) {
+            statuses = new ArrayList<>();
+        }
+        statuses.add(status);
+        status.setProject(this);
+    }
+
+    public void add(Label label) {
+        if(labels == null) {
+            labels = new ArrayList<>();
+        }
+        labels.add(label);
+        label.setProject(this);
     }
 }
