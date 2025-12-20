@@ -42,6 +42,12 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
+    public UserResponseDto findById(String id) {
+        return userRepository.findById(id)
+                .map(userMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    }
+
     public UserResponseDto update(String id, CreateUserDto userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -51,7 +57,9 @@ public class UserService {
         user.setPassword(userDto.getPassword());
         user.setAvatar(userDto.getAvatar());
 
-        return userMapper.toDto(user);
+        User updatedUser = userRepository.save(user);
+
+        return userMapper.toDto(updatedUser);
     }
 
     public void delete(String id) {
