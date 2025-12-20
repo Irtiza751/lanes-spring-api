@@ -6,6 +6,7 @@ import com.irtiza.lanes.mappers.UserMapper;
 import com.irtiza.lanes.models.User;
 import com.irtiza.lanes.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    @Transactional
     public UserResponseDto create(CreateUserDto createUserDto) {
         User newUser = User.builder()
                 .name(createUserDto.getName())
@@ -36,18 +38,13 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponseDto findByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .map(userMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-    }
-
     public UserResponseDto findById(String id) {
         return userRepository.findById(id)
                 .map(userMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
+    @Transactional
     public UserResponseDto update(String id, CreateUserDto userDto) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
@@ -62,6 +59,7 @@ public class UserService {
         return userMapper.toDto(updatedUser);
     }
 
+    @Transactional
     public void delete(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
