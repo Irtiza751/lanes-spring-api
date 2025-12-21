@@ -49,11 +49,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         // updating user properties
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
-        user.setAvatar(userDto.getAvatar());
-
+        userMapper.updateUserFromDto(userDto, user);
         User updatedUser = userRepository.save(user);
 
         return userMapper.toDto(updatedUser);
