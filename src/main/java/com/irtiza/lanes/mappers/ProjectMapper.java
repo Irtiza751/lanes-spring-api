@@ -5,7 +5,7 @@ import com.irtiza.lanes.dtos.ProjectResponseDto;
 import com.irtiza.lanes.models.Project;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "Spring")
+@Mapper(componentModel = "Spring", uses = {UserMapper.class})
 public interface ProjectMapper {
     ProjectResponseDto toDto(Project project);
 
