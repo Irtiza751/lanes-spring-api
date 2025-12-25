@@ -11,16 +11,12 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSprintDto {
+public class UpdateSprintDto {
     @NotBlank(message = "name is required")
     private String name;
 
     @NotNull(message = "cannot be null")
     private Boolean isActive;
-
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-
-    @NotBlank(message = "project id is required")
-    private String projectId;
 }

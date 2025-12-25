@@ -2,6 +2,7 @@ package com.irtiza.lanes.controllers;
 
 import com.irtiza.lanes.dtos.CreateSprintDto;
 import com.irtiza.lanes.dtos.SprintResponseDto;
+import com.irtiza.lanes.dtos.UpdateSprintDto;
 import com.irtiza.lanes.services.SprintService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +28,18 @@ public class SprintController {
         return ResponseEntity.ok(sprintService.findSprintByProject(projectId));
     }
 
-    @GetMapping("/{sprintId}")
-    ResponseEntity<SprintResponseDto> findOneSprint(@PathVariable String sprintId) {
-        return ResponseEntity.ok(sprintService.findOneSprint(sprintId));
+    @GetMapping("/{projectId}/{sprintId}")
+    ResponseEntity<SprintResponseDto> findOneSprint(@PathVariable String projectId, @PathVariable String sprintId) {
+        return ResponseEntity.ok(sprintService.findOneSprint(projectId, sprintId));
+    }
+
+    @PutMapping("/{sprintId}")
+    ResponseEntity<SprintResponseDto> updateSprint(@PathVariable String sprintId, @RequestBody @Valid UpdateSprintDto sprintDto) {
+        return ResponseEntity.ok(sprintService.update(sprintId, sprintDto));
     }
 
     @DeleteMapping("/{sprintId}")
-    ResponseEntity<String> deleteOneSprint(@PathVariable String sprintId) {
-        return ResponseEntity.ok(sprintService.deleteSprint(sprintId));
+    ResponseEntity<String> deleteSprint(@PathVariable String sprintId) {
+        return ResponseEntity.ok(sprintService.delete(sprintId));
     }
 }
