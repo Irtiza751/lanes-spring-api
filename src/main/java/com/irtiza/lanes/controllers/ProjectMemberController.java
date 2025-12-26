@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/projects/members")
 @RequiredArgsConstructor
@@ -21,17 +23,24 @@ public class ProjectMemberController {
     }
 
     @GetMapping
-    ResponseEntity<?> findAllMembers() {
+    ResponseEntity<List<ProjectMemberResponseDto>> findAllMembers() {
         return ResponseEntity.ok(projectMemberService.findAllMembers());
     }
 
-    @GetMapping("/{ownerId}")
-    ResponseEntity<?> findAllByOwnerId(@PathVariable String ownerId) {
-        return ResponseEntity.ok(projectMemberService.findAllMembersByOwner(ownerId));
+    @GetMapping("/{projectId}")
+    ResponseEntity<List<ProjectMemberResponseDto>> findAllByProjectId(@PathVariable String projectId) {
+        return ResponseEntity.ok(projectMemberService.findAllMembersByProject(projectId));
     }
 
-    @DeleteMapping("/{memberId}")
-    ResponseEntity<?> deleteMember(@PathVariable String memberId) {
-        return null;
+    @GetMapping("/{projectId}/{memberId}")
+    ResponseEntity<ProjectMemberResponseDto> findOneMember(@PathVariable String projectId, @PathVariable String memberId) {
+        return ResponseEntity.ok(projectMemberService.findOneMember(projectId, memberId));
+    }
+
+    @DeleteMapping("/{projectId}/{memberId}")
+    ResponseEntity<String> deleteMember(@PathVariable String projectId, @PathVariable String memberId) {
+        return ResponseEntity
+                .accepted()
+                .body(projectMemberService.deleteProjectMember(projectId, memberId));
     }
 }

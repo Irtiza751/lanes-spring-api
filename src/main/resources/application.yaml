@@ -10,8 +10,10 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
+    show_sql: true
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false

@@ -51,10 +51,22 @@ public class ProjectMemberService {
                 .toList();
     }
 
-    public List<ProjectMemberResponseDto> findAllMembersByOwner(String ownerId) {
-        return projectMemberRepository.findAllByProjectOwnerId(ownerId)
+    public List<ProjectMemberResponseDto> findAllMembersByProject(String projectId) {
+        return projectMemberRepository.findAllByProjectId(projectId)
                 .stream()
                 .map(projectMemberMapper::toDto)
                 .toList();
+    }
+
+    public ProjectMemberResponseDto findOneMember(String projectId, String memberId) {
+        return projectMemberRepository.findOneByProjectIdAndMemberId(projectId, memberId)
+                .map(projectMemberMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Member does not exist in this project"));
+    }
+
+    @Transactional
+    public String deleteProjectMember(String projectId, String memberId) {
+        projectMemberRepository.deleteByProjectIdAndMemberId(projectId, memberId);
+        return "Project member has been removed.";
     }
 }

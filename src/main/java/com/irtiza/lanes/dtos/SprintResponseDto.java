@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserResponseDto {
+public class SprintResponseDto {
     private String id;
-    private String email;
     private String name;
-    private String avatar;
-    private LocalDateTime createdAt;
+    private Boolean isActive;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 }
