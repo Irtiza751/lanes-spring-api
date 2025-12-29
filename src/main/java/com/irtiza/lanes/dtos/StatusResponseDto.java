@@ -1,28 +1,18 @@
-package com.irtiza.lanes.models;
+package com.irtiza.lanes.dtos;
 
 import com.irtiza.lanes.enums.StatusCategory;
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "statuses")
-public class Status {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+public class StatusResponseDto {
     private String id;
-
     private String name;
     private Integer position;
-
-    @Enumerated(EnumType.STRING)
     private StatusCategory category;
-
-    @ManyToOne
-    private Project project;
 }
