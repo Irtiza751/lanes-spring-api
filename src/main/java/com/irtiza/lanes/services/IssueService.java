@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -29,31 +30,32 @@ public class IssueService {
         User reporter = userRepository.findById(issueDto.getReporterId())
                 .orElseThrow(() -> new EntityNotFoundException("Reporter does not exist!"));
 
+        Project project = projectRepository.findById(issueDto.getProjectId())
+                .orElseThrow(() -> new EntityNotFoundException("Project does not exist!"));
+
         User assignee = null;
         if(Objects.nonNull(issueDto.getAssigneeId())) {
             assignee = userRepository.findById(issueDto.getAssigneeId())
-                    .orElse(null);
+                    .orElseThrow(() -> new EntityNotFoundException("User does not exist!"));
         }
 
-        Project project = projectRepository.findById(issueDto.getProjectId())
-                .orElseThrow(() -> new EntityNotFoundException("Project does not exist!"));
 
         Sprint sprint = null;
         if(Objects.nonNull(issueDto.getSprintId())) {
             sprint = sprintRepository.findById(issueDto.getSprintId())
-                    .orElse(null);
+                    .orElseThrow(() -> new EntityNotFoundException("Sprint does not exist!"));
         }
 
         Status status = null;
         if(Objects.nonNull(issueDto.getStatusId())) {
             status = statusRepository.findById(issueDto.getStatusId())
-                    .orElse(null);
+                    .orElseThrow(() -> new EntityNotFoundException("Status does not exist!"));
         }
 
         Issue parent = null;
         if(Objects.nonNull(issueDto.getParentId())) {
             parent = issueRepository.findById(issueDto.getParentId())
-                    .orElse(null);
+                    .orElseThrow(() -> new EntityNotFoundException("Parent does not exist!"));
         }
 
         Issue issue = Issue.builder()
@@ -73,5 +75,32 @@ public class IssueService {
 
         Issue savedIssue = issueRepository.save(issue);
         return issueMapper.toDto(savedIssue);
+    }
+
+    public IssueResponseDto update(String issueId, CreateIssueDto issueDto) {
+        Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new EntityNotFoundException("Issue does not exist!"));
+
+        issueMapper.updateIssue(issueDto, issue);
+        Issue savedIssue = issueRepository.save(issue);
+        return issueMapper.toDto(savedIssue);
+    }
+
+    public List<IssueResponseDto> findByProject(String id) {
+        return issueRepository.findByProjectId(id)
+                .stream()
+                .map(issueMapper::toDto)
+                .toList();
+    }
+
+    public IssueResponseDto findById(String id) {
+        return issueRepository.findById(id)
+                .map(issueMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("Issue does not exist!"));
+    }
+
+    public String delete(String id) {
+        issueRepository.deleteById(id);
+        return "Issue deleted successfully";
     }
 }

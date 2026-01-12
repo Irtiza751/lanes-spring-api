@@ -7,10 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/issues")
@@ -21,5 +20,25 @@ public class IssueController {
     @PostMapping
     ResponseEntity<IssueResponseDto> create(@RequestBody @Valid CreateIssueDto issueDto) {
         return new ResponseEntity<>(issueService.create(issueDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{projectId}")
+    ResponseEntity<List<IssueResponseDto>> findIssues(@PathVariable String projectId) {
+        return ResponseEntity.ok(issueService.findByProject(projectId));
+    }
+
+    @GetMapping("/{issueId}")
+    ResponseEntity<IssueResponseDto> findById(@PathVariable String issueId) {
+        return ResponseEntity.ok(issueService.findById(issueId));
+    }
+
+    @PatchMapping("/{issueId}")
+    ResponseEntity<IssueResponseDto> update(@PathVariable String issueId, @RequestBody @Valid CreateIssueDto issueDto) {
+        return ResponseEntity.ok(issueService.update(issueId, issueDto));
+    }
+
+    @DeleteMapping("/{issueId}")
+    ResponseEntity<String> delete(@PathVariable String issueId) {
+        return ResponseEntity.accepted().body(issueService.delete(issueId));
     }
 }
