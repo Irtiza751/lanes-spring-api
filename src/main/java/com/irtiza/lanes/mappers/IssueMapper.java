@@ -19,6 +19,8 @@ public interface IssueMapper {
     @Mapping(target = "children", ignore = true)
     @Mapping(target = "comments", ignore = true)
     @Mapping(target = "labels", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateIssue(CreateIssueDto dto, @MappingTarget Issue issue);
 }
